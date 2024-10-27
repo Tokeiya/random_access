@@ -1,0 +1,9 @@
+[package]
+name = "playground"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rand = "*"
+rand_core = "*"
+sfmt = "*"
