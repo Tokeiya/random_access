@@ -114,7 +114,7 @@ pub(crate) fn rnd_diff() {
 }
 
 pub(super) fn calc_population() {
-	let file = File::create("./artifacts/output.txt").unwrap();
+	let file = File::create("./artifacts/pop_result.tsv").unwrap();
 	let mut write = BufWriter::new(file);
 
 	let mut accum = [0usize; 2048];
