@@ -1,19 +1,12 @@
-mod recent;
-mod xorshift_64;
+mod calc_population;
+mod hardware_random;
+mod result_writer;
 
-use std::fs::File;
-use std::io::{Result as IoResult, Write};
+use crate::hardware_random::RandomGenerator;
+use calc_population::calc_population;
 
-const MASK: u64 = 0x07_FF;
-
-fn write_result(result: &[usize], mut write: impl Write) -> IoResult<()> {
-	writeln!(write, "diff\tcount")?;
-
-	for (idx, cnt) in result.iter().enumerate() {
-		writeln!(write, "{idx}\t{cnt}")?;
-	}
-	Ok(())
-}
 fn main() {
-	xorshift::Xo
+	let mut foo = hardware_random::HardRnd::default();
+
+	println!("{}", foo.get_random_u64())
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="9a0ea622-2109-42fd-9fd4-3722fd0ee056" name="black">
+        <fileTransfer rootFolder="/home/tokeiya3" accessType="SFTP" host="black" port="22" sshConfigId="b89eeed5-4d84-4dbf-a980-b997a59fbd8f" sshConfig="tokeiya3@black:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" isUseRsync="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
