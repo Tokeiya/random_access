@@ -1,6 +1,7 @@
 mod calc_population;
 mod hardware_random;
 mod result_writer;
+mod xorshift_64;
 
 use crate::hardware_random::RandomGenerator;
 use calc_population::calc_population;
