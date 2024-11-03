@@ -33,6 +33,8 @@ fn build_path(range: RangeSizes, iteration: usize, file_name: &str) -> String {
 
 fn main() {
 	let size = vec![
+		(RangeSizes::Size4, 1048576),
+		(RangeSizes::Size8, 524288),
 		(RangeSizes::Size16, 16384),
 		(RangeSizes::Size512, 16),
 		(RangeSizes::Size1_024, 4),
@@ -44,26 +46,28 @@ fn main() {
 		let mut theoretical = TheoreticalGenerator;
 		let mut xorshift64 = XorShift64Generator::new(11_350_246_256_191_930_912);
 		let mut hardware = HardwareGenerator::new();
-		let mut xorshiro = XorShiroSampleGenerator::new(1_977_334_479_820_102_579);
+		let mut xorshiro = Xoshiro256StarStarGenerator::new(1_977_334_479_820_102_579);
 
 		println!("range:{} size:{}", rng, ite);
 
 		println!("theoretical");
 		let result = theoretical.generate(*rng, *ite);
-		let mut writer = File::create(build_path(*rng, *ite, "theoretical")).unwrap();
-		result_writer::write_result(&mut writer, &result).unwrap();
+		let mut writer = File::create(build_path(*rng, *ite, "theoretical.tsv")).unwrap();
+		result_writer::write_result(&mut writer, "theoretical", &result).unwrap();
 
 		println!("xorshift64");
 		let result = xorshift64.generate(*rng, *ite);
-		let mut writer = File::create(build_path(*rng, *ite, "xorshift64")).unwrap();
+		let mut writer = File::create(build_path(*rng, *ite, "xorshift64.tsv")).unwrap();
+		result_writer::write_result(&mut writer, "xorshift64", &result).unwrap();
 
 		println!("xorshiro64");
 		let result = xorshiro.generate(*rng, *ite);
-		let mut writer = File::create(build_path(*rng, *ite, "xorshiro64")).unwrap();
+		let mut writer = File::create(build_path(*rng, *ite, "xorshiro64.tsv")).unwrap();
+		result_writer::write_result(&mut writer, "xoshiro256**", &result).unwrap();
 
 		println!("hardware");
 		let result = hardware.generate(*rng, *ite);
-		let mut writer = File::create(build_path(*rng, *ite, "hardware")).unwrap();
-		result_writer::write_result(&mut writer, &result).unwrap();
+		let mut writer = File::create(build_path(*rng, *ite, "hardware.tsv")).unwrap();
+		result_writer::write_result(&mut writer, "hardware_rnd", &result).unwrap();
 	})
 }

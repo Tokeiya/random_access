@@ -43,22 +43,24 @@ impl SampleGenerator for XorShift64Generator {
 			let diff = recent.abs_diff(idx);
 
 			data[idx].inclement_count();
-			data[recent].inclement_diff();
+			data[diff].inclement_diff();
+
+			recent = idx;
 		}
 
 		data
 	}
 }
 
-pub struct XorShiroSampleGenerator(Xoshiro256StarStar);
+pub struct Xoshiro256StarStarGenerator(Xoshiro256StarStar);
 
-impl XorShiroSampleGenerator {
+impl Xoshiro256StarStarGenerator {
 	pub fn new(seed: u64) -> Self {
-		XorShiroSampleGenerator(Xoshiro256StarStar::seed_from_u64(seed))
+		Xoshiro256StarStarGenerator(Xoshiro256StarStar::seed_from_u64(seed))
 	}
 }
 
-impl SampleGenerator for XorShiroSampleGenerator {
+impl SampleGenerator for Xoshiro256StarStarGenerator {
 	fn generate(&mut self, range: RangeSizes, iteration: usize) -> Vec<GenerateResult> {
 		let mut data = Vec::new();
 		let ite = range.to_usize() * range.to_usize() * iteration;
