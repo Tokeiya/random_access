@@ -1,22 +1,14 @@
-mod calc_population;
-mod generate_result;
-mod hardware_random;
-mod range_sizes;
-mod result_writer;
-mod sample_generator;
-mod xorshift_64;
-
-use crate::hardware_random::HardRnd;
-use crate::hardware_random::RandomGenerator;
-use calc_population::calc_population;
-use generate_result::GenerateResult;
 use rand_core::RngCore;
 use rand_core::SeedableRng;
 use rand_xoshiro::Xoshiro256StarStar;
-use range_sizes::RangeSizes;
-use sample_generator::*;
 use std::fs::File;
 
+use crate::scatter_survey::range_sizes::RangeSizes;
+use crate::scatter_survey::result_writer;
+use crate::scatter_survey::sample_generator::{
+	HardwareGenerator, SampleGenerator, TheoreticalGenerator, XorShift64Generator,
+	Xoshiro256StarStarGenerator,
+};
 use rayon::prelude::*;
 
 fn build_path(range: RangeSizes, iteration: usize, file_name: &str) -> String {
@@ -31,7 +23,7 @@ fn build_path(range: RangeSizes, iteration: usize, file_name: &str) -> String {
 	format!("./artifacts/{arch}_{range}_{iteration}_{file_name}")
 }
 
-fn main() {
+fn gen_sample() {
 	let size = vec![
 		(RangeSizes::Size4, 1048576),
 		(RangeSizes::Size8, 524288),

@@ -2,7 +2,8 @@ use super::calc_population::calc_population;
 use super::generate_result::GenerateResult;
 use super::range_sizes::RangeSizes;
 use super::xorshift_64::Xorshift64;
-use crate::hardware_random::{HardRnd, RandomGenerator};
+//use crate::hardware_random::{HardRnd, RandomGenerator};
+use crate::scatter_survey::hardware_random::{HardRnd, RandomGenerator};
 use rand_core::{RngCore, SeedableRng};
 use rand_xoshiro::Xoshiro256StarStar;
 
