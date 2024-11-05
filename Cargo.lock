@@ -67,6 +67,14 @@ name = "hardware_oracle"
 version = "0.1.0"
 
 [[package]]
+name = "idx_bench"
+version = "0.1.0"
+dependencies = [
+ "rand_core 0.3.1",
+ "rand_xoshiro",
+]
+
+[[package]]
 name = "lazy_static"
 version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"

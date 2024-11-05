@@ -1,0 +1,8 @@
+[package]
+name = "idx_bench"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rand_core = "*"
+rand_xoshiro = "*"

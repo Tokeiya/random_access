@@ -6,3 +6,5 @@ mod range_sizes;
 mod result_writer;
 mod sample_generator;
 mod xorshift_64;
+
+pub use gen_sample::gen_sample;

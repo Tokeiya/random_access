@@ -5,8 +5,8 @@ use std::fs::File;
 use crate::scatter_survey::range_sizes::RangeSizes;
 use crate::scatter_survey::result_writer;
 use crate::scatter_survey::sample_generator::{
-	HardwareGenerator, SampleGenerator, TheoreticalGenerator, XorShift64Generator,
-	Xoshiro256StarStarGenerator,
+	HardwareGenerator, SampleGenerator, SplitMix64Generator, TheoreticalGenerator,
+	XorShift64Generator, Xoshiro256StarStarGenerator,
 };
 use rayon::prelude::*;
 
@@ -22,7 +22,7 @@ fn build_path(range: RangeSizes, iteration: usize, file_name: &str) -> String {
 	format!("./artifacts/{ARCH}_{range}_{iteration}_{file_name}")
 }
 
-fn gen_sample() {
+pub fn gen_sample() {
 	let size = vec![
 		(RangeSizes::Size4, 1048576),
 		(RangeSizes::Size8, 524288),
@@ -31,12 +31,14 @@ fn gen_sample() {
 		(RangeSizes::Size1_024, 4),
 		(RangeSizes::Size2_048, 1),
 		(RangeSizes::Size4_096, 1),
+		(RangeSizes::Size8_192, 1),
+		(RangeSizes::Size16_384, 1),
 	];
 
 	size.par_iter().for_each(|(rng, ite)| {
 		let mut theoretical = TheoreticalGenerator;
 		let mut xorshift64 = XorShift64Generator::new(11_350_246_256_191_930_912);
-		let mut hardware = HardwareGenerator::new();
+		let mut split64 = SplitMix64Generator::new(15_194_449_367_676_471_644);
 		let mut xorshiro = Xoshiro256StarStarGenerator::new(1_977_334_479_820_102_579);
 
 		println!("range:{} size:{}", rng, ite);
@@ -56,9 +58,9 @@ fn gen_sample() {
 		let mut writer = File::create(build_path(*rng, *ite, "xorshiro64.tsv")).unwrap();
 		result_writer::write_result(&mut writer, "xoshiro256**", &result).unwrap();
 
-		println!("hardware");
-		let result = hardware.generate(*rng, *ite);
-		let mut writer = File::create(build_path(*rng, *ite, "hardware.tsv")).unwrap();
+		println!("split64");
+		let result = split64.generate(*rng, *ite);
+		let mut writer = File::create(build_path(*rng, *ite, "split64.tsv")).unwrap();
 		result_writer::write_result(&mut writer, "hardware_rnd", &result).unwrap();
 	})
 }

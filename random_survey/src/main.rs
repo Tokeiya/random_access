@@ -1,4 +1,8 @@
+#![feature(test)]
+
 mod random_bench;
 mod scatter_survey;
 
-fn main() {}
+fn main() {
+	scatter_survey::gen_sample();
+}

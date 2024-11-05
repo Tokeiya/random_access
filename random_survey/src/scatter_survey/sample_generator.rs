@@ -5,7 +5,7 @@ use super::xorshift_64::Xorshift64;
 //use crate::hardware_random::{HardRnd, RandomGenerator};
 use crate::scatter_survey::hardware_random::{HardRnd, RandomGenerator};
 use rand_core::{RngCore, SeedableRng};
-use rand_xoshiro::Xoshiro256StarStar;
+use rand_xoshiro::{SplitMix64, Xoshiro256StarStar};
 
 pub trait SampleGenerator {
 	fn generate(&mut self, range: RangeSizes, iteration: usize) -> Vec<GenerateResult>;
@@ -41,6 +41,40 @@ impl SampleGenerator for XorShift64Generator {
 
 		for _ in 0..ite {
 			let idx = self.0.next() as usize & mask;
+			let diff = recent.abs_diff(idx);
+
+			data[idx].inclement_count();
+			data[diff].inclement_diff();
+
+			recent = idx;
+		}
+
+		data
+	}
+}
+
+pub struct SplitMix64Generator(SplitMix64);
+
+impl SplitMix64Generator {
+	pub fn new(seed: u64) -> Self {
+		SplitMix64Generator(SplitMix64::seed_from_u64(seed))
+	}
+}
+
+impl SampleGenerator for SplitMix64Generator {
+	fn generate(&mut self, range: RangeSizes, iteration: usize) -> Vec<GenerateResult> {
+		let mut data = Vec::with_capacity(iteration);
+		let ite = range.to_usize() * range.to_usize() * iteration;
+
+		for _ in 0..range.to_usize() {
+			data.push(GenerateResult::new(0, 0));
+		}
+
+		let mask = range.to_usize() - 1;
+		let mut recent = self.0.next_u64() as usize & mask;
+
+		for _ in 0..ite {
+			let idx = self.0.next_u64() as usize & mask;
 			let diff = recent.abs_diff(idx);
 
 			data[idx].inclement_count();
