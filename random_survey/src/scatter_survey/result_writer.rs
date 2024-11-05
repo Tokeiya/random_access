@@ -1,5 +1,4 @@
 use super::generate_result::GenerateResult;
-use std::fs::File;
 use std::io::{Result as IoResult, Write};
 
 static ARCH: &str = if cfg!(target_arch = "x86_64") {

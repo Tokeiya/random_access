@@ -10,7 +10,7 @@ pub fn calc_population(range: RangeSizes, iteration: usize) -> Vec<GenerateResul
 	));
 	let mut cnt = (range.to_usize() - 1) * 2;
 
-	for i in 1..range.to_usize() {
+	for _ in 1..range.to_usize() {
 		accum.push(GenerateResult::new(
 			iteration * range.to_usize(),
 			cnt * iteration,

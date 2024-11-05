@@ -1,6 +1,5 @@
-use rand_core::RngCore;
-use rand_core::SeedableRng;
-use rand_xoshiro::Xoshiro256StarStar;
+#![allow(dead_code)]
+
 use std::fs::File;
 
 use crate::scatter_survey::range_sizes::RangeSizes;
@@ -12,7 +11,7 @@ use crate::scatter_survey::sample_generator::{
 use rayon::prelude::*;
 
 fn build_path(range: RangeSizes, iteration: usize, file_name: &str) -> String {
-	const arch: &str = if cfg!(target_arch = "x86_64") {
+	const ARCH: &str = if cfg!(target_arch = "x86_64") {
 		"x86_64"
 	} else if cfg!(target_arch = "aarch64") {
 		"aarch64"
@@ -20,7 +19,7 @@ fn build_path(range: RangeSizes, iteration: usize, file_name: &str) -> String {
 		"unknown"
 	};
 
-	format!("./artifacts/{arch}_{range}_{iteration}_{file_name}")
+	format!("./artifacts/{ARCH}_{range}_{iteration}_{file_name}")
 }
 
 fn gen_sample() {

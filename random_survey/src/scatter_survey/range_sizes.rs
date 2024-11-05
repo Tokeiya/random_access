@@ -1,5 +1,6 @@
 use std::fmt::{Debug, Display, Formatter};
 
+#[allow(dead_code)]
 #[derive(Clone, Copy)]
 pub enum RangeSizes {
 	Size2,
